@@ -15,11 +15,14 @@
 # [START gae_python37_app]
 from flask import Flask, render_template, request
 import requests
+import requests_cache
 import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__)
+# Caches requests for 180 seconds
+requests_cache.install_cache(cache_name='exchangeratesapi_cache', backend='sqlite', expire_after=180)
 BASE_CURRENCY = 'USD'
 
 
@@ -69,8 +72,7 @@ def exchange_rates_all():
                     'exchange': rate,
                     'conversion': str(float(amount) * exchange_rate_data[code]) if amount.isdigit() or amount.replace(".", "").isdigit() else "Invalid input"
                 })
-
-            return json.dumps(sorted(list_of_dicts, key = lambda i: i['exchange']) )
+            return json.dumps(sorted(list_of_dicts, key=lambda i: i['exchange']))
         else:
             return "Error establishing connection to the API"
 
