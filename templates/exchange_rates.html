@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+      <div class="jumbotron d-flex align-items-center">
+        <div class="container">
+                    <h4> Currency converter </h4>
+                    <br>
+                    <div class="input-group">
+                        <select class="form-control" id="base_code">
+                            {% for code in codes %}
+                            <option value="{{ code }}" {% if code == "USD" %} selected {% endif %}>{{ code }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" class="form-control" value="1" id="amount"/>
+                        <select class="form-control" id="target_code">
+                            {% for code in codes %}
+                            <option value="{{ code }}" {% if code == "EUR" %} selected {% endif %}>{{ code }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text" class="form-control" id="target" value="{{ eur }}" readonly />
+                    </div>
+                    <br>
+                    <p><a class="btn btn-primary" data-toggle="collapse" href="#collapseTable" role="button" aria-expanded="false" aria-controls="collapseTable">Show all exchanges</a></p>
+                    <div class="collapse" id="collapseTable">
+                        <div class="card card-body">
+                            <table id="table" data-height="900">
+                                <thead>
+                                    <tr>
+                                        <th data-field="base">Base currency</th>
+                                        <th data-field="target">Target currency</th>
+                                        <th data-field="exchange">Exchange rate</th>
+                                        <th data-field="conversion">Converted amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                 </div>
+        </div>
+      </div>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS, the Bootstrap Table -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+
+    <!-- Will later move this to a .js file that will be served by google's CDN -->
+    <script>
+        $(document).on('change','#target_code',function(){
+            let base_code = $("#base_code").val();
+            let target_code = $("#target_code").val();
+            let amount = $("#amount").val();
+            console.log(base_code);
+            console.log(target_code);
+            console.log(amount);
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({'base_code':base_code, 'target_code':target_code, 'amount': amount}),
+                url: '/getexchangerate',
+                contentType: 'application/json',
+            }).done(function(data) {
+                if (data == "Error establishing connection to the API") {
+                    $("#target").val("API Error")
+                } else {
+                    let output = JSON.parse(data)
+                    $("#target").val(output['target_amount'])
+                }
+            });
+        });
+
+        $(document).on('change','#amount',function(){
+            let base_code = $("#base_code").val();
+            let target_code = $("#target_code").val();
+            let amount = $("#amount").val();
+            console.log(base_code);
+            console.log(target_code);
+            console.log(amount);
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({'base_code':base_code, 'target_code':target_code, 'amount': amount}),
+                url: '/getexchangerate',
+                contentType: 'application/json',
+            }).done(function(data) {
+                if (data == "Error establishing connection to the API") {
+                    $("#target").val("API Error")
+                } else {
+                    let output = JSON.parse(data)
+                    $("#target").val(output['target_amount'])
+                }
+            });
+        });
+
+        $(document).on('change','#base_code',function(){
+            let base_code = $("#base_code").val();
+            let target_code = $("#target_code").val();
+            let amount = $("#amount").val();
+            console.log(base_code);
+            console.log(target_code);
+            console.log(amount);
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({'base_code':base_code, 'target_code':target_code, 'amount': amount}),
+                url: '/getexchangerate',
+                contentType: 'application/json',
+            }).done(function(data) {
+                if (data == "Error establishing connection to the API") {
+                    $("#target").val("API Error")
+                } else {
+                    let output = JSON.parse(data)
+                    $("#target").val(output['target_amount'])
+                }
+            });
+        });
+
+        $(document).on('change','#target_code',function(){
+            let base_code = $("#base_code").val();
+            let target_code = $("#target_code").val();
+            let amount = $("#amount").val();
+            console.log(base_code);
+            console.log(target_code);
+            console.log(amount);
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({'base_code':base_code, 'target_code':target_code, 'amount': amount}),
+                url: '/getexchangerate',
+                contentType: 'application/json',
+            }).done(function(data) {
+                if (data == "Error establishing connection to the API") {
+                    $("#target").val("API Error")
+                } else {
+                    let output = JSON.parse(data)
+                    $("#target").val(output['target_amount'])
+                }
+            });
+        });
+
+        $(document).on('show.bs.collapse','#collapseTable',function() {
+            let base_code = $("#base_code").val();
+            let amount = $("#amount").val();
+            console.log(base_code);
+            console.log(amount);
+            $.ajax({
+                type: "POST",
+                data: JSON.stringify({'base_code':base_code, 'amount': amount}),
+                url: '/getexchangerateall',
+                contentType: 'application/json',
+            }).done(function(data) {
+                if (data == "Error establishing connection to the API") {
+                    var mydata = [];
+                    $('#table').bootstrapTable({
+                        data: mydata
+                    });
+                } else {
+                    let output = JSON.parse(data)
+                    $('#table').removeData();
+                    $('#table').bootstrapTable({
+                        data: output
+                    });
+                }
+            });
+        })
+    </script>
+  </body>
+</html>
